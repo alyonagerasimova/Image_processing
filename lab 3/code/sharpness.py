@@ -13,6 +13,6 @@ def sharp(image, kernel_size=(15, 15), sigma=0.0, amount=5.0, threshold=0):
     return sharpened
 
 
-image = cv2.imread('out/blur.jpg')
+image = cv2.imread('../out/blur.jpg')
 sharpened_image = sharp(image)
-cv2.imwrite('out/my-sharpened-image5.jpg', sharpened_image)
+cv2.imwrite('../out/my-sharpened-image5.jpg', sharpened_image)
