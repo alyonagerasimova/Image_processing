@@ -3,8 +3,8 @@
 1. Скачать любое цифровое изображение. Желательно многоцветное
 
 <div align="center">
- <img src="../lab 2/img.jpg" width=500>
-  <div>Исходное изображение</div>
+ <div>Исходное изображение:</div>
+ <img src="../lab 2/img.jpg" width=66%>
 </div>
 
 2. Применить к исходному изображению Гауссово размытие. Отобразить результат.
@@ -23,7 +23,7 @@ cv2.imwrite("out/blur.jpg", Gaussian)
 - отклонение — стандартное отклонение по оси X.
 
 <div align="center">
- <img src="out/blur.jpg" alt="blur" width=500>
+ <img src="out/blur.jpg" alt="blur" width=66%>
 </div>
 
 3. Реализовать функцию повышения резкости методом усиления границ.
@@ -52,7 +52,7 @@ def sharp(image, kernel_size=(9, 9), sigma=1.0, amount=5.0, threshold=0):
    изображением.
 
 <div align="center">
- <img src="out/my-sharpened-image5.jpg" alt="sharpened-image" width=500>
+ <img src="out/my-sharpened-image5.jpg" alt="sharpened-image" width=66%>
 </div>
 
 5. Используя две любые функции повышающие резкость изображения, обработать размытое изображение. Результаты также
@@ -69,12 +69,13 @@ enhancer_object = ImageEnhance.Sharpness(image)
 out = enhancer_object.enhance(factor)
 out.save("out/sharpness.jpg")
 ```
+<div align="center">
+ <div>Исходное размытое изображение:</div>
+ <img src="out/blur.jpg" width=66%>
 
-<div>Исходное размытое изображение:</div>
-<img src="out/blur.jpg" width=500>
-
-<div>Результат:</div>
-<img src="out/sharpness.jpg" alt="sharpness" width=500>
+ <div>Результат:</div>
+ <img src="out/sharpness.jpg" alt="sharpness" width=66%>
+</div>
 
 - Для повышения резкости можно также использовать соответствующее ядро,представляющее собой небольшую матрицу, и функцию
   filter2D.
@@ -86,9 +87,11 @@ im = cv2.filter2D(image, -1, kernel)
 cv2.imwrite("out/sharpness2.jpg", im)
 ```
 
-<div>Исходное размытое изображение:</div>
-<img src="out/blur.jpg" width=500>
+<div align="center">
+ <div>Исходное размытое изображение:</div>
+ <img src="out/blur.jpg" width=66%>
 
-<div>Результат:</div>
-<img src="out/sharpness2.jpg" alt="sharpness2" width=500>
+ <div>Результат:</div>
+ <img src="out/sharpness2.jpg" alt="sharpness2" width=66%>
+</div>
 
