@@ -6,7 +6,7 @@ import skimage.color
 from numpy import dstack
 from PIL import Image
 
-img = cv2.imread("../img.jpg")
+img = cv2.imread("../../lab 3/img.jpg")
 RGB = np.array(img, dtype=np.uint8)
 
 matrix_RGB_to_XYZ = np.array(
@@ -45,6 +45,11 @@ def invert_matrix(AM, IM):
 
 
 sum = X + Y + Z
+
+x = X/sum
+y = Y/sum
+z = Z/sum
+
 fig = plt.subplots()
 x = np.linspace(0, 0.8, 1080)
 Z = np.array(Z, dtype=np.uint8)

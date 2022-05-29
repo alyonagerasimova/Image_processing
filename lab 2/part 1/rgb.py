@@ -2,16 +2,17 @@ import cv2
 from numpy import dstack
 import numpy as np
 
-img = cv2.imread("../img.jpg")
+img = cv2.imread("../img1.jpg")
 b, g, r = cv2.split(img)
-
-img_gs = cv2.imread('../img.jpg', cv2.IMREAD_GRAYSCALE)
-
-cv2.imwrite("img2.jpg", img_gs)
 
 cv2.imwrite("r.jpg", r)
 cv2.imwrite("b.jpg", b)
 cv2.imwrite("g.jpg", g)
+
+
+img_gs = cv2.imread('../img1.jpg', cv2.IMREAD_GRAYSCALE)
+
+cv2.imwrite("img2.jpg", img_gs)
 
 linImage = r * 0.2126 + g * 0.7152 + b * 0.0722
 

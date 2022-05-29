@@ -19,12 +19,12 @@ import matplotlib.pyplot as plt
 # plt.imsave("out/gaussian_blur1.jpg", img2)
 
 #Размытие по Гауссу
-OriImage = Image.open('../../lab 2/img.jpg')
+OriImage = Image.open('../img.jpg')
 gaussImage = OriImage.filter(ImageFilter.GaussianBlur(5))
 gaussImage.save('out/gaussian_blur.jpg')
 
 #GaussianBlur( кадр, размер ядра, отклонение)
-image = cv2.imread('../../lab 2/img.jpg')
+image = cv2.imread('../img.jpg')
 Gaussian = cv2.GaussianBlur(image, (15, 15), 0)
 cv2.imwrite("../out/blur.jpg", Gaussian)
 # cv2.imshow('Gaussian Blurring', Gaussian)

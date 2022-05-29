@@ -4,7 +4,7 @@ import skimage.color
 from numpy import dstack
 from PIL import Image
 
-img = cv2.imread("../img_xyz.jpg")
+img = cv2.imread("../part 2/img_xyz.jpg")
 
 matrix_XYZ_to_RGB = np.array(
     [[2.36461385, -0.89654057, -0.46807328],
@@ -25,8 +25,9 @@ def xyz_to_rgb(image):
 
 
 RGB = xyz_to_rgb(img)
-cv2.imshow("newRGB", RGB)
-cv2.waitKey(0)
+cv2.imwrite("newRGB.jpg", RGB)
+# cv2.imshow("newRGB", RGB)
+# cv2.waitKey(0)
 
 
 def gamma_trans(img, gamma):
@@ -36,5 +37,6 @@ def gamma_trans(img, gamma):
 
 
 newImg = gamma_trans(RGB, 2.2)
-cv2.imshow("newImg", newImg)
-cv2.waitKey(0)
+cv2.imwrite("newRGBWithGamma.jpg", RGB)
+# cv2.imshow("newImg", newImg)
+# cv2.waitKey(0)
