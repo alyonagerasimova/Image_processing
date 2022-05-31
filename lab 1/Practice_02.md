@@ -19,18 +19,21 @@ cv2.destroyAllWindows()
 
 <div align="center">
  <div>Изображение:</div>
- <img src="" width=66%>
+ <img src="1-read-from-camera/test.bmp" width=33%>
 </div>
 
 4. Получение RAW изображения с устройства.
 
 ```
-
+raw = rawpy.imread('IMG_0001.dng')
+rgb = raw.postprocess()
+imageio.imsave('default.jpg', rgb)
 ```
+ <img src="1-read-from-camera/IMG_0001.dng" alt="" width=33%>
 
 <div align="center">
 <div>Изображение:</div>
- <img src="" alt="" width=66%>
+ <img src="1-read-from-camera/default.jpg" alt="" width=33%>
 </div>
 
 5. Создание алгоритма "байеризации".
@@ -52,26 +55,41 @@ Image.fromarray(resArray, "RGB").save("o.png")
 ```
 
 <div align="center">
-<div>"Байеризационное" изображение:</div>
- <img src="2-bayer/o.png" alt="" width=66%>
+<div>Результат:</div>
+ <img src="2-bayer/o.png" alt="" width=33%>
 </div>
 
 6. Выбор изображения для работы
 
 7. Реализация суперпикселей. Аналоги библиотек.
 
-<div align="center">
- <img src="" alt="" width=66%>
-</div>
+```
+numSegments = 300
+image = img_as_float(io.imread("../2-bayer/img.jpg"))
+segments = slic(image, n_segments=numSegments)
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+ax.imshow(mark_boundaries(image, segments))
+plt.axis("off")
+plt.show()
+```
+
+![img.png](img.png) 
 
 8. Реализация билинейной интерполяции. Аналоги библиотек.
 
 ```
+img = Image.open(path, 'r')
 
+w, h = img.size
+new_w = int(w * factor)
+new_h = int(h * factor)
+
+img.resize((new_w, new_h), Image.BILINEAR).save('./res.jpg')
 ```
-<div>
+<div align="center">
  <div>Результат:</div>
- <img src="" alt="sharpness" width=66%>
+ <img src="4-bilinear-interp/res.jpg" alt="sharpness" width=33%>
 </div>
 
 9. Реализация алгоритма VNG. Аналоги библиотек
