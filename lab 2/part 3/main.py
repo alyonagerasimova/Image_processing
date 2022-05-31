@@ -7,7 +7,7 @@ import cv2
 import math
 
 # lst = pd.read_csv("sample3.csv").values
-img = cv2.imread("../../lab 3/img.jpg")
+img = cv2.imread("../img1.jpg")
 
 matrix_RGB_to_XYZ = np.array(
     [[0.412453, 0.357580, 0.180423],
@@ -18,9 +18,9 @@ matrix_RGB_to_XYZ = np.array(
 
 def rgb_to_xyz(image):
     r0, g0, b0 = cv2.split(image)
-    r = 1 / 2.2 * r0 / 255.0
-    g = 1 / 2.2 * g0 / 255.0
-    b = 1 / 2.2 * b0 / 255.0
+    r = r0 / 255.0
+    g = g0 / 255.0
+    b = b0 / 255.0
     xyz_x = matrix_RGB_to_XYZ[0][0] * r + matrix_RGB_to_XYZ[0][1] * g + matrix_RGB_to_XYZ[0][2] * b
     xyz_y = matrix_RGB_to_XYZ[1][0] * r + matrix_RGB_to_XYZ[1][1] * g + matrix_RGB_to_XYZ[1][2] * b
     xyz_z = matrix_RGB_to_XYZ[2][0] * r + matrix_RGB_to_XYZ[2][1] * g + matrix_RGB_to_XYZ[2][2] * b
@@ -31,7 +31,7 @@ X = np.array(rgb_to_xyz(img)[:, 1])
 Y = np.array(rgb_to_xyz(img)[:, 2])
 Z = np.array(rgb_to_xyz(img)[:, 3])
 
-node = 100
+node = 200
 
 array = np.array([[0.4898, 0.3101, 0.2001],
                   [0.1769, 0.8124, 0.0107],
@@ -66,9 +66,13 @@ for (v, v2) in zip(x, y):
     tmpy = np.linspace(YWhite, v2, node)
     Ally = np.append(Ally, tmpy)
 
-AllY = Ally + 0.7 * np.exp(-(Allx - XWhite) ** 2 / 4000 - (Ally - YWhite) ** 2 / 4000)
-AllX = Allx / Ally * AllY
-AllZ = (1 - Allx - Ally) / Ally * AllY
+
+# AllY = Ally + 0.7 * np.exp(-(Allx - XWhite) ** 2 / 4000 - (Ally - YWhite) ** 2 / 4000)
+# AllX = Allx / Ally * AllY
+# AllZ = (1 - Allx - Ally) / Ally * AllY
+AllY = Ally
+AllX = Allx
+AllZ = 1 - Allx - Ally
 
 XYZ = [[x, y, z] for (x, y, z) in zip(AllX, AllY, AllZ)]
 RGB = [np.dot(InvArray, v) for v in XYZ]
@@ -87,9 +91,10 @@ for v in RGB:
         v[2] = 1
 
 plt.figure()
-plt.rcParams['font.family'] = 'Times New Roman'
-plt.rcParams['font.size'] = 10
-leg = plt.legend(loc=1, fontsize=25)
-# leg.get_frame().set_alpha(1)
-plt.scatter(Allx, Ally, marker='o', c=RGB)
+plt.scatter(Allx, Ally, c=RGB)
 plt.show()
+
+# fig = plt.subplots()
+# y = 1 - x - z
+# plt.plot(x, y(x))
+# plt.show()

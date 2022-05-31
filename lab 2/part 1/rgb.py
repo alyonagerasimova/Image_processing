@@ -9,7 +9,6 @@ cv2.imwrite("r.jpg", r)
 cv2.imwrite("b.jpg", b)
 cv2.imwrite("g.jpg", g)
 
-
 img_gs = cv2.imread('../img1.jpg', cv2.IMREAD_GRAYSCALE)
 
 cv2.imwrite("img2.jpg", img_gs)
@@ -36,6 +35,20 @@ outArray = np.array(img0, dtype=np.uint8)
 print(srcArray - outArray)
 cv2.imwrite("dif.jpg", srcArray - outArray)
 
+
+def get_channels(image):
+    red, green, blue = image.copy(), image.copy(), image.copy()
+    red[:, :, (1, 2)] = 0
+    green[:, :, (0, 2)] = 0
+    blue[:, :, (0, 1)] = 0
+    return red, green, blue
+
+
+b, g, r = get_channels(img0)
+cv2.imwrite("outR.jpg", r)
+cv2.imwrite("outG.jpg", g)
+cv2.imwrite("outB.jpg", b)
+
 # def image_gray(image):
 #     imageWidth = image.size[0]
 #     imageHeight = image.size[1]
@@ -46,21 +59,3 @@ cv2.imwrite("dif.jpg", srcArray - outArray)
 #     return cv2.LUT(img, grayImage)
 
 # cv2.imwrite("out.jpg", linImage)
-
-
-
-# def rgb2gray(rgb):
-#     return np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
-#
-#
-# img = mpimg.imread('image.png')
-# gray = rgb2gray(img)
-# plt.imshow(gray, cmap=plt.get_cmap('gray'))
-# plt.show()
-
-
-# fi = img_gs / 255.0
-# gamma = 0.4
-# out = np.power(fi, gamma)
-# cv2.imshow("out", out)
-# cv2.waitKey()

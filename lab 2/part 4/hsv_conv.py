@@ -3,14 +3,15 @@ import numpy as np
 import skimage.color
 from PIL import Image
 from numpy import dstack
+import imageio
 
 img = cv2.imread("../img1.jpg")
 RGB = np.array(img, dtype=np.uint8)
 
 HSV_skimage = skimage.color.rgb2hsv(RGB.astype(np.uint8))
-cv2.imwrite("hsvLibskimage.jpg", HSV_skimage)
-
-
+# cv2.imwrite("HSVLib.png", HSV_skimage.astype(np.uint8))
+# Image.fromarray(HSV_skimage.astype(np.uint8)).save("HSVLib.png")
+# imageio.imsave('HSVLib.png', HSV_skimage)
 # cv2.imshow("hsvLibskimage", HSV_skimage)
 # cv2.waitKey(0)
 
@@ -34,12 +35,16 @@ def rgb2hsv(rgb):
     return hsv
 
 
-HSV = rgb2hsv(np.asarray(RGB))
-cv2.imwrite("HSV.jpg", HSV)
-
-
+HSV = rgb2hsv(RGB)
+# cv2.imwrite("HSV.png", HSV)
+# imageio.imsave("HSV.png", HSV)
 # cv2.imshow("hsv", HSV)
 # cv2.waitKey(0)
+
+outArray = np.array(HSV, dtype=np.uint8)
+outArrayLib = np.array(HSV_skimage, dtype=np.uint8)
+dif = np.abs(outArrayLib - outArray)
+cv2.imwrite("difHSV.png", dif)
 
 
 def hsv2rgb(hsv):
@@ -61,10 +66,24 @@ def hsv2rgb(hsv):
     return rgb
 
 
-RGBNew = hsv2rgb(np.asarray(HSV))
-cv2.imshow("RGBNew", RGBNew)
+RGBNew = hsv2rgb(HSV)
+# Image.fromarray(RGBNew.astype(np.uint8)).save("RGBLib.png")
+# cv2.imwrite("RGBNew.png", RGBNew)
+# imageio.imsave("RGBNew.png", RGBNew)
+# cv2.imshow("RGBNew", RGBNew)
+# cv2.waitKey(0)
+
+RGBNew_skimage = skimage.color.hsv2rgb(HSV_skimage)
+cv2.imshow("RGBNewLibskimage", RGBNew_skimage)
 cv2.waitKey(0)
 
-RGBNew_skimage = skimage.color.hsv2rgb(HSV)
-# cv2.imshow("RGBNewLibskimage", RGBNew_skimage)
-# cv2.waitKey(0)
+outArray = np.array(RGBNew, dtype=np.uint8)
+outArrayLib = np.array(RGBNew_skimage, dtype=np.uint8)
+dif = np.abs(outArrayLib - outArray)
+cv2.imwrite("RGBNew.png", outArray)
+
+# original = cv2.imread("../img1.jpg")
+# outArray = np.array(RGBNew, dtype=np.uint8)
+# outArrayLib = np.array(original, dtype=np.uint8)
+# dif = np.abs(outArrayLib - outArray)
+# cv2.imwrite("difRGB.png", dif)
