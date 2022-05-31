@@ -64,15 +64,15 @@ cv2.imwrite("outB.jpg", b)
 <div style="display: inline-flex">
     <div align="center"> 
         <div>R:</div>
-         <img src="part%201/outR.jpg" alt="" width="350">
+         <img src="part%201/outR.jpg" alt="" width="300">
     </div>
     <div align="center"> 
         <div>G:</div>
-        <img src="part%201/outG.jpg" alt="" width="350">
+        <img src="part%201/outG.jpg" alt="" width="300">
     </div>
     <div align="center"> 
         <div>B:</div>
-        <img src="part%201/outB.jpg" alt="" width="350">
+        <img src="part%201/outB.jpg" alt="" width="300">
     </div>
 </div>
 
