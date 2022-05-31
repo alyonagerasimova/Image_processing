@@ -64,11 +64,19 @@ cv2.imwrite("out.jpg", img0)
 
 6. Написать функцию перевода цветов из линейного RGB в XYZ с использованием матрицы. Найти подходящую библиотечную функцию. Сравнить результаты через построение разностного изоборажения.
 ```
+# перевод с использованием матрицы
+matrix_RGB_to_XYZ = np.array(
+    [[0.49000, 0.31000, 0.20000],
+     [0.17697, 0.81240, 0.01063],
+     [0.00000, 0.01000, 0.99000]]
+)
+
+
 def rgb_to_xyz(image):
     r0, g0, b0 = cv2.split(image)
-    r = 1 / 2.2 * r0 / 255.0
-    g = 1 / 2.2 * g0 / 255.0
-    b = 1 / 2.2 * b0 / 255.0
+    r = r0 / 255.0
+    g = g0 / 255.0
+    b = b0 / 255.0
     xyz_x = matrix_RGB_to_XYZ[0][0] * r + matrix_RGB_to_XYZ[0][1] * g + matrix_RGB_to_XYZ[0][2] * b
     xyz_y = matrix_RGB_to_XYZ[1][0] * r + matrix_RGB_to_XYZ[1][1] * g + matrix_RGB_to_XYZ[1][2] * b
     xyz_z = matrix_RGB_to_XYZ[2][0] * r + matrix_RGB_to_XYZ[2][1] * g + matrix_RGB_to_XYZ[2][2] * b
@@ -77,15 +85,63 @@ def rgb_to_xyz(image):
 XYZ = rgb_to_xyz(img)
 ```
 <div align="center">
+ <img src="part%202/img_1.png" alt="" width=66%>
+</div>
+
+```
+# перевод с использованием библиотечной функции skimage
+XYZ_skimage = skimage.color.rgb2xyz(RGB.astype(np.uint8))
+```
+
+<div align="center">
+ <img src="part%202/img.png" alt="" width=66%>
+</div>
+
+<div align="center">
 <div>Разностное изоборажение:</div>
  <img src="part%202/dif.jpg" alt="" width=66%>
 </div>
 
 7. Написать функцию перевода цветов из XYZ в RGB (построить обратную матрицу XYZ в RGB). Преобразовать изображение XYZ в линейный RGB. Применить гамма преобразование. Сравнить результаты через построение разностного изоборажения.
+```
+# перевод с использованием обратной матрицы
+matrix_XYZ_to_RGB = np.array(
+    [[2.36461385, -0.89654057, -0.46807328],
+     [-0.51516621, 1.4264081, 0.0887581],
+     [0.0052037, -0.01440816, 1.00920446]]
+)
+
+
+def xyz_to_rgb(image):
+    r0, g0, b0 = cv2.split(image)
+    r = r0 / 255.0
+    g = g0 / 255.0
+    b = b0 / 255.0
+    xyz_x = matrix_XYZ_to_RGB[0][0] * r + matrix_XYZ_to_RGB[0][1] * g + matrix_XYZ_to_RGB[0][2] * b
+    xyz_y = matrix_XYZ_to_RGB[1][0] * r + matrix_XYZ_to_RGB[1][1] * g + matrix_XYZ_to_RGB[1][2] * b
+    xyz_z = matrix_XYZ_to_RGB[2][0] * r + matrix_XYZ_to_RGB[2][1] * g + matrix_XYZ_to_RGB[2][2] * b
+    return dstack((xyz_x, xyz_y, xyz_z))
+
+
+RGB = xyz_to_rgb(img)
+```
+<div align="center">
+ <img src="part%202/img_3.png" alt="" width=66%>
+</div>
+
+```
+# перевод с использованием библиотечной функции skimage
+RGB_skimage = skimage.color.xyz2rgb(img.astype(np.uint8))
+```
+<div align="center">
+ <img src="part%202/img_7.png" alt="" width=66%>
+</div>
 
 <div align="center">
- <img src="" alt="" width=66%>
+<div>Разностное изоборажение между переведенным в RGB через обратную матрицу преобразования XYZ в RGB и через библиотечную функцию:</div>
+ <img src="part%202/difRGBLib.jpg" alt="" width=66%>
 </div>
+
 
 8. Построить проекцию цветов исходного изображения на цветовой локус (плоскость xy).
 
@@ -98,6 +154,37 @@ XYZ = rgb_to_xyz(img)
 </div>
 
 9. Написать функцию перевода цветов из линейного RGB в HSV и обратно. Найти подходящую библиотечную функцию. Сравнить результаты через построение разностного изоборажения.
-10. Используя библиотечные функции цветовой разности сравнить результаты, полученные в пунктах 6, 7, 9 (для каждой функции).
+```
+def rgb2hsv(rgb):
+    rgb = rgb.astype('float')
+    maxv = np.amax(rgb, axis=2)
+    maxc = np.argmax(rgb, axis=2)
+    minv = np.amin(rgb, axis=2)
+    minc = np.argmin(rgb, axis=2)
+
+    hsv = np.zeros(rgb.shape, dtype='float')
+    hsv[maxc == minc, 0] = np.zeros(hsv[maxc == minc, 0].shape)
+    hsv[maxc == 0, 0] = (((rgb[:, :, 1] - rgb[:, :, 2]) * 60.0 / (maxv - minv + np.spacing(1))) % 360.0)[maxc == 0]
+    hsv[maxc == 1, 0] = (((rgb[:, :, 2] - rgb[:, :, 0]) * 60.0 / (maxv - minv + np.spacing(1))) + 120.0)[maxc == 1]
+    hsv[maxc == 2, 0] = (((rgb[:, :, 0] - rgb[:, :, 1]) * 60.0 / (maxv - minv + np.spacing(1))) + 240.0)[maxc == 2]
+    hsv[maxv == 0, 1] = np.zeros(hsv[maxv == 0, 1].shape)
+    hsv[maxv != 0, 1] = (1 - minv / (maxv + np.spacing(1)))[maxv != 0]
+    hsv[:, :, 2] = maxv
+
+    return hsv
+```
+<div align="center">
+ <img src="part%204/img_1.png" alt="" width=66%>
+</div>
+
+```
+HSV_skimage = skimage.color.rgb2hsv(RGB.astype(np.uint8))
+```
+
+<div align="center">
+ <img src="part%204/img.png" alt="" width=66%>
+</div>
+
+11. Используя библиотечные функции цветовой разности сравнить результаты, полученные в пунктах 6, 7, 9 (для каждой функции).
 
 

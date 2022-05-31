@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import skimage.color
 from numpy import dstack
-from PIL import Image
 
 img = cv2.imread("../img1.jpg")
 RGB = np.array(img, dtype=np.uint8)
@@ -15,12 +14,9 @@ matrix_RGB_to_XYZ = np.array(
 
 # перевод с использованием библиотечной функции
 XYZ_skimage = skimage.color.rgb2xyz(RGB.astype(np.uint8))
-r, g, b = cv2.split(XYZ_skimage)
-# im = Image.new(mode="RGB", size=(1920, 1080), color=(r, g, b))
-# img1 = cv2.cvtColor(XYZ_skimage, cv2.COLOR_BGR2HSV)
-# cv2.imwrite("out1.jpg", img1)
-# cv2.imshow("xyzLib", XYZ_skimage)
-# cv2.waitKey(0)
+# XYZ_cv2 = cv2.cvtColor(RGB, cv2.COLOR_RGB2XYZ)
+cv2.imshow("xyzLibskimage", XYZ_skimage)
+cv2.waitKey(0)
 
 
 # перевод с использованием матрицы
@@ -36,10 +32,8 @@ def rgb_to_xyz(image):
 
 
 XYZ = rgb_to_xyz(img)
-cv2.imwrite("out2.jpg", XYZ)
-
-# cv2.imshow("xyz", XYZ)
-# cv2.waitKey(0)
+cv2.imshow("xyz", XYZ)
+cv2.waitKey(0)
 
 srcArray = np.array(XYZ_skimage, dtype=np.uint8)
 outArray = np.array(XYZ, dtype=np.uint8)
@@ -53,10 +47,8 @@ dif_b = np.abs(b0 - b)
 dif = np.abs(srcArray - outArray)
 print(dif)
 cv2.imwrite("dif.jpg", dif)
-# cv2.imshow("dif", dif)
-# cv2.waitKey(0)
 
 # cv2.imshow("dif_r", dif_r)
 # cv2.imshow("dif_g", dif_g)
 # cv2.imshow("dif_b", dif_b)
-cv2.waitKey(0)
+# cv2.waitKey(0)
