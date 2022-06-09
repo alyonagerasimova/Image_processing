@@ -173,66 +173,15 @@ RGB_skimage = skimage.color.xyz2rgb(img.astype(np.uint8))
 8. Построить проекцию цветов исходного изображения на цветовой локус (плоскость xy).
 
 ```
-X = np.array(rgb_to_xyz(img)[0])
-Y = np.array(rgb_to_xyz(img)[1])
-Z = np.array(rgb_to_xyz(img)[2])
-node = 100
-array = np.array([[0.4887180, 0.3106803, 0.2006017],
-                  [0.1762044, 0.8129847, 0.0108109],
-                  [0.0000000, 0.0102048, 0.9897952]])
-InvArray = np.linalg.inv(array)
-x = X / (X + Y + Z)
-y = Y / (X + Y + Z)
-z = Z / (X + Y + Z)
-xs, ys, zs = 0, 0, 0
-tmpx = np.linspace(x[0], x[-1], node)
-tmpy = np.linspace(y[0], y[-1], node)
+img = cv2.imread("../img1.jpg")
+RGB = np.array(img, dtype=np.uint8)
 
-for i in range(len(x)):
-    xs += x[i]
-    ys += y[i]
-    zs += z[i]
-    
-XWhite = xs / (xs + ys + zs)
-YWhite = ys / (xs + ys + zs)
-Allx, Ally, AllX, AllZ = [], [], [], []
-x = np.append(x, tmpx)
-y = np.append(y, tmpy)
-
-for (v, v2) in zip(x, y):
-    tmpx = np.linspace(XWhite, v, node)
-    Allx = np.append(Allx, tmpx)
-    tmpy = np.linspace(YWhite, v2, node)
-    Ally = np.append(Ally, tmpy)
-
-AllY = Ally
-AllX = Allx
-AllZ = 1 - Allx - Ally
-
-XYZ = [[x, y, z] for (x, y, z) in zip(AllX, AllY, AllZ)]
-RGB = [np.dot(InvArray, v) for v in XYZ]
-for v in RGB:
-    if v[0] < 0:
-        v[0] = 0
-    if v[0] > 1:
-        v[0] = 1
-    if v[1] < 0:
-        v[1] = 0
-    if v[1] > 1:
-        v[1] = 1
-    if v[2] < 0:
-        v[2] = 0
-    if v[2] > 1:
-        v[2] = 1
-
-plt.figure()
-plt.scatter(Allx, Ally, c=RGB)
-plt.show()
+plot_RGB_chromaticities_in_chromaticity_diagram_CIE1931(RGB)
 ```
 
 <div align="center">
  <div>Проекция цветов на цветовой локус (плоскость xy):</div>
- <img src="part%203/img_1.png" alt="" width=66%>
+ <img src="part%203/img_2.png" alt="" width=66%>
 </div>
 
 9. Написать функцию перевода цветов из линейного RGB в HSV и обратно. Найти подходящую библиотечную функцию. Сравнить
